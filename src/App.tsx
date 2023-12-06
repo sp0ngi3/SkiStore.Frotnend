@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useState,useEffect} from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+  const [products,setProducts]=useState([
+  {name:'product1',price:100.00},
+  {name:'product2',price:200.00}
+  ])
+
+  useEffect(()=>{
+    fetch('http://localhost:12345/api/products')
+    .then(response=>response.json())
+    .then(data=>setProducts(data.data))
+  },[])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
+    <div>
       <h1>SkiStore Frontend</h1>
-      <h1>Mode : {import.meta.env.VITE_MODE}</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <ul>
+         {products.map((item,index)=>(
+          <li key={index}>{item.name} - {item.price}</li>
+         ))}
+      </ul>
+    </div>
   )
 }
 
