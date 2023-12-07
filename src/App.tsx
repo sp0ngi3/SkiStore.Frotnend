@@ -1,12 +1,10 @@
 import {useState,useEffect} from 'react'
 import './App.css'
+import { Product } from './models/product'
 
 function App() {
   
-  const [products,setProducts]=useState([
-  {name:'product1',price:100.00},
-  {name:'product2',price:200.00}
-  ])
+  const [products,setProducts]=useState<Product[]>([])
 
   useEffect(()=>{
     fetch('http://localhost:12345/api/products')
