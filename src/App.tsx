@@ -1,6 +1,7 @@
 import {useState,useEffect} from 'react'
 import './App.css'
 import { Product } from './models/product'
+import Catalog from './components/Catalog'
 
 function App() {
   
@@ -15,11 +16,7 @@ function App() {
   return (
     <div>
       <h1>SkiStore Frontend</h1>
-      <ul>
-         {products.map((item,index)=>(
-          <li key={index}>{item.name} - {item.price}</li>
-         ))}
-      </ul>
+     <Catalog products={products}/>
     </div>
   )
 }
