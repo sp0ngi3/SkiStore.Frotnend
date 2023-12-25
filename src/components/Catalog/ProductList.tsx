@@ -1,4 +1,4 @@
-import { List } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Product } from "../../models/product";
 import ProductCard from "../ProductCard";
 
@@ -8,11 +8,13 @@ interface Props {
 
 function ProductList({ products }: Props) {
   return (
-    <List>
+    <Grid container spacing={3}>
       {products.map((item) => (
-        <ProductCard key={item.id} product={item} />
+        <Grid item xs={4} key={item.id}>
+          <ProductCard product={item} />
+        </Grid>
       ))}
-    </List>
+    </Grid>
   );
 }
 
