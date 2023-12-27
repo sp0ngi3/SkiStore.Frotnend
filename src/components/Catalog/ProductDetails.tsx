@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import agent from "../api/agent";
 import NotFound from "../../errors/NotFound";
+import LoadingComponent from "../../errors/LoadingComponent";
 
 function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -28,7 +29,7 @@ function ProductDetails() {
         .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <h3>Loading...</h3>;
+  if (loading) return <LoadingComponent message="Loading product ..." />;
   if (!product) return <NotFound />;
   return (
     <Grid container spacing={6}>
