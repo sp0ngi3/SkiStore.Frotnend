@@ -1,17 +1,17 @@
-import {
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from "@mui/material";
+import { useEffect, useState } from "react";
 import { Product } from "../../models/product";
 import ProductList from "./ProductList";
 
-interface Props {
-  products: Product[];
-}
-function Catalog({ products }: Props) {
+function Catalog() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const API_URL = import.meta.env.VITE_APIURL;
+  useEffect(() => {
+    fetch(API_URL + "products")
+      .then((response) => response.json())
+      .then((data) => setProducts(data.data));
+  }, []);
+
   return (
     <>
       <ProductList products={products} />
