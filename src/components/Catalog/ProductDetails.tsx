@@ -12,20 +12,19 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import agent from "../api/agent";
 
 function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = import.meta.env.VITE_APIURL;
-
   useEffect(() => {
-    axios
-      .get(API_URL + `products/${id}`)
-      .then((response) => setProduct(response.data.data))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+    id &&
+      agent.Catalog.details(parseInt(id))
+        .then((response) => setProduct(response))
+        .catch((error) => console.log(error))
+        .finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return <h3>Loading...</h3>;

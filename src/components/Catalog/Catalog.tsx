@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { Product } from "../../models/product";
 import ProductList from "./ProductList";
+import agent from "../api/agent";
 
 function Catalog() {
   const [products, setProducts] = useState<Product[]>([]);
 
-  const API_URL = import.meta.env.VITE_APIURL;
   useEffect(() => {
-    fetch(API_URL + "products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data.data));
+    agent.Catalog.list().then((products) => setProducts(products));
   }, []);
 
   return (
