@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { router } from "../../routes/Routes";
 
 axios.defaults.baseURL = import.meta.env.VITE_APIURL;
+axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data.data;
 
@@ -59,9 +60,32 @@ const TestErrors = {
   get500Error: () => requests.get("server-error"),
 };
 
+const Basket = {
+  get: () => requests.get("basket"),
+  addItem: async (productId: number, quantity = 1) => {
+    try {
+      const response = await requests.post(
+        `basket?productId=${productId}&quantity=${quantity}`,
+        {}
+      );
+
+      const buyerId = response;
+
+      if (buyerId !== undefined) {
+        document.cookie = `BuyerId=${buyerId}; path=/`;
+      }
+    } catch (error) {
+      console.error("Error adding item to basket : ", error);
+    }
+  },
+  removeItem: (productId: number, quantity = 1) =>
+    requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
+};
+
 const agent = {
   Catalog,
   TestErrors,
+  Basket,
 };
 
 export default agent;
