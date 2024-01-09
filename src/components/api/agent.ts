@@ -75,8 +75,18 @@ const Basket = {
 
   addItem: async (productId: number, quantity = 1) => {
     try {
+      const cookiesArray = document.cookie.split("; ");
+
+      const buyerIdCookie = cookiesArray.find((cookie) =>
+        cookie.startsWith("BuyerId=")
+      );
+
+      const extractedBuyerId = buyerIdCookie
+        ? buyerIdCookie.split("=")[1]
+        : null;
+
       const response = await requests.post(
-        `basket?productId=${productId}&quantity=${quantity}`,
+        `basket/${extractedBuyerId}?productId=${productId}&quantity=${quantity}`,
         {}
       );
 

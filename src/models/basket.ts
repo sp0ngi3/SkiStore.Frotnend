@@ -1,3 +1,5 @@
+import { Product } from "./product";
+
 export interface BasketItem {
   productId: number;
   name: string;
@@ -6,6 +8,7 @@ export interface BasketItem {
   brand: string;
   type: string;
   quantity: number;
+  product: Product;
 }
 
 export interface Basket {
