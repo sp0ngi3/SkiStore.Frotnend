@@ -16,6 +16,7 @@ import { useStoreContext } from "../../context/StoreContextValue";
 import { useState } from "react";
 import agent from "../api/agent";
 import BasketSummary from "./BasketSummary";
+import { Link } from "react-router-dom";
 
 function BasketPage() {
   const { basket, setBasket, removeItem } = useStoreContext();
@@ -107,6 +108,15 @@ function BasketPage() {
         <Grid item xs={6} />
         <Grid item xs={6}>
           <BasketSummary />
+          <Button
+            component={Link}
+            to="/checkout"
+            variant="contained"
+            size="large"
+            fullWidth
+          >
+            Checkout
+          </Button>
         </Grid>
       </Grid>
     </>
