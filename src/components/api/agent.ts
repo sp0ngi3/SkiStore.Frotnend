@@ -95,12 +95,27 @@ const Basket = {
       if (buyerId !== undefined) {
         document.cookie = `BuyerId=${buyerId}; path=/`;
       }
+
+      const secondResponse = Basket.get();
+
+      return secondResponse;
     } catch (error) {
       console.error("Error adding item to basket : ", error);
     }
   },
-  removeItem: (productId: number, quantity = 1) =>
-    requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
+  removeItem: (productId: number, quantity = 1) => {
+    const cookiesArray = document.cookie.split("; ");
+
+    const buyerIdCookie = cookiesArray.find((cookie) =>
+      cookie.startsWith("BuyerId=")
+    );
+
+    const extractedBuyerId = buyerIdCookie ? buyerIdCookie.split("=")[1] : null;
+
+    return requests.delete(
+      `basket/${extractedBuyerId}?productId=${productId}&quantity=${quantity}`
+    );
+  },
 };
 
 const agent = {

@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import agent from "./api/agent";
 import LoadingComponent from "../errors/LoadingComponent";
+import { useStoreContext } from "../context/StoreContextValue";
 
 interface Props {
   product: Product;
