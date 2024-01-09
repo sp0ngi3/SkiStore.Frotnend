@@ -9,6 +9,7 @@ import { Avatar, CardHeader } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import agent from "./api/agent";
+import LoadingComponent from "../errors/LoadingComponent";
 
 interface Props {
   product: Product;
@@ -24,6 +25,7 @@ function ProductCard({ product }: Props) {
       .finally(() => setLoading(false));
   }
 
+  if (loading) return <LoadingComponent message="Loading product..." />;
   return (
     <Card>
       <CardHeader

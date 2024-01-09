@@ -61,7 +61,18 @@ const TestErrors = {
 };
 
 const Basket = {
-  get: () => requests.get("basket"),
+  get: () => {
+    const cookiesArray = document.cookie.split("; ");
+
+    const buyerIdCookie = cookiesArray.find((cookie) =>
+      cookie.startsWith("BuyerId=")
+    );
+
+    const extractedBuyerId = buyerIdCookie ? buyerIdCookie.split("=")[1] : null;
+
+    return requests.get(`basket/${extractedBuyerId}`);
+  },
+
   addItem: async (productId: number, quantity = 1) => {
     try {
       const response = await requests.post(
