@@ -9,9 +9,6 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/Routes.tsx";
 import { Provider } from "react-redux";
 import { store } from "./configureStore.ts";
-import { fetchProductAsync } from "./components/Catalog/catalogSlice.ts";
-
-store.dispatch(fetchProductAsync());
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
