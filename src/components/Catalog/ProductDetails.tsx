@@ -16,15 +16,16 @@ import {
 import agent from "../api/agent";
 import NotFound from "../../errors/NotFound";
 import LoadingComponent from "../../errors/LoadingComponent";
-import { useStoreContext } from "../../context/StoreContextValue";
+import { useAppDispatch, useAppSelector } from "../../configureStore";
+import { removeItem, setBasket } from "../Basket/BasketSlice";
 
 function ProductDetails() {
-  const { basket, setBasket, removeItem } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(0);
-  const [submitting, setSubmitting] = useState(false);
   const item = basket?.items.find((i) => i.product.id === product?.id);
 
   useEffect(() => {
@@ -46,19 +47,21 @@ function ProductDetails() {
 
   function handleUpdateCard() {
     if (!product) return;
-    setSubmitting(true);
+
     if (!item || quantity > item.quantity) {
       const updatedQuantity = item ? quantity - item.quantity : quantity;
       agent.Basket.addItem(product?.id, updatedQuantity)
-        .then((basket) => setBasket(basket))
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false));
+        .then((basket) => dispatch(setBasket(basket)))
+        .catch((error) => console.log(error));
     } else {
       const updatedQuantity = item.quantity - quantity;
       agent.Basket.removeItem(product?.id, updatedQuantity)
-        .then(() => removeItem(product?.id, quantity))
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false));
+        .then(() =>
+          dispatch(
+            removeItem({ productId: product.id, quantity: updatedQuantity })
+          )
+        )
+        .catch((error) => console.log(error));
     }
   }
 

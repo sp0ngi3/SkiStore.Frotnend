@@ -12,20 +12,22 @@ import {
   Typography,
 } from "@mui/material";
 import { Add, Delete, Remove } from "@mui/icons-material";
-import { useStoreContext } from "../../context/StoreContextValue";
 import { useState } from "react";
 import agent from "../api/agent";
 import BasketSummary from "./BasketSummary";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../configureStore";
+import { removeItem, setBasket } from "./BasketSlice";
 
 function BasketPage() {
-  const { basket, setBasket, removeItem } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
   function handleAddItem(productId: number) {
     setLoading(true);
     agent.Basket.addItem(productId)
-      .then((basket) => setBasket(basket))
+      .then((basket) => dispatch(setBasket(basket)))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }
@@ -33,7 +35,7 @@ function BasketPage() {
   function handleRemoveItem(productId: number, quantity = 1) {
     setLoading(true);
     agent.Basket.removeItem(productId, quantity)
-      .then(() => removeItem(productId, quantity))
+      .then(() => dispatch(removeItem({ productId, quantity })))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }

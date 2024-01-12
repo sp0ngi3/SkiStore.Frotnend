@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import agent from "./api/agent";
 import LoadingComponent from "../errors/LoadingComponent";
-import { useStoreContext } from "../context/StoreContextValue";
+import { useAppDispatch } from "../configureStore";
+import { setBasket } from "./Basket/BasketSlice";
 
 interface Props {
   product: Product;
@@ -18,10 +19,12 @@ interface Props {
 
 function ProductCard({ product }: Props) {
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   function handleAddItem(productId: number) {
     setLoading(true);
     agent.Basket.addItem(productId)
+      .then((basket) => dispatch(setBasket(basket)))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }
