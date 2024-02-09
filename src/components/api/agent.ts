@@ -5,7 +5,7 @@ import { router } from "../../routes/Routes";
 axios.defaults.baseURL = import.meta.env.VITE_APIURL;
 axios.defaults.withCredentials = true;
 
-const responseBody = (response: AxiosResponse) => response.data.data;
+const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.response.use(
   async (response) => {
@@ -51,6 +51,7 @@ const requests = {
 const Catalog = {
   list: () => requests.get("products"),
   details: (id: number) => requests.get(`products/${id}`),
+  getFilters: () => requests.get("products/filters"),
 };
 
 const TestErrors = {
