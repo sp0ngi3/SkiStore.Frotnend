@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import ProductList from "./ProductList";
-import LoadingComponent from "../../errors/LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../../configureStore";
 import {
   fetchFilters,
   fetchProductsAsync,
   productSelectors,
+  setPageNumber,
   setProductParams,
 } from "./catalogSlice";
 import { Grid, Paper } from "@mui/material";
@@ -40,8 +40,6 @@ function Catalog() {
     if (!filtersLoaded) dispatch(fetchFilters());
   }, [dispatch, filtersLoaded]);
 
-  if (status.includes("pending") || !metaData)
-    return <LoadingComponent message="Loading products..." />;
   return (
     <Grid container spacing={4}>
       <Grid item xs={3}>
@@ -80,13 +78,15 @@ function Catalog() {
         <ProductList products={products} />
       </Grid>
       <Grid item xs={3} />
-      <Grid item xs={9}>
-        <AppPagination
-          metaData={metaData}
-          onPageChange={(page: number) =>
-            dispatch(setProductParams({ pageNumber: page }))
-          }
-        />
+      <Grid item xs={9} sx={{ mb: 2 }}>
+        {metaData && (
+          <AppPagination
+            metaData={metaData}
+            onPageChange={(page: number) =>
+              dispatch(setPageNumber({ pageNumber: page }))
+            }
+          />
+        )}
       </Grid>
     </Grid>
   );
